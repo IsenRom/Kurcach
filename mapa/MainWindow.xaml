@@ -1,0 +1,35 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:mapa"
+        xmlns:WindowsPresentation="clr-namespace:GMap.NET.WindowsPresentation;assembly=GMap.NET.WindowsPresentation" x:Class="mapa.MainWindow"
+        mc:Ignorable="d"
+        Title="Party map" Height="600" Width="1400">
+    <Grid>
+
+
+        <Grid Name="Maps" Height="Auto" Width="Auto" Margin="10,10,450,10">
+            <WindowsPresentation:GMapControl x:Name="Map" Loaded="MapLoaded"/>
+
+
+        </Grid>
+        <Button x:Name="search_button" Content="Найти исполнителя" HorizontalAlignment="Left" Margin="955,35,0,0" VerticalAlignment="Top" Width="120" Click="btn1_Click" Height="31"/>
+        <TextBox x:Name="tb_name_art" HorizontalAlignment="Left" Height="21" Margin="955,9,0,0" TextWrapping="Wrap" Text="Имя исполнителя" VerticalAlignment="Top" Width="103" MouseDoubleClick="tb_name_art_MouseDoubleClick"/>
+        <Label x:Name="lab_art_name" Content="Название артиста:" HorizontalAlignment="Left" Margin="955,71,0,0" VerticalAlignment="Top" Width="427"/>
+        <Label x:Name="lab_art_counrty" Content="Страна мероприятия:" HorizontalAlignment="Left" Margin="955,102,0,0" VerticalAlignment="Top" Width="427"/>
+        <Label x:Name="lab_art_city" Content="Город мероприятия:" HorizontalAlignment="Left" Margin="955,133,0,0" VerticalAlignment="Top" Width="427"/>
+        <Label x:Name="lab_art_place" Content="Название площадки:" HorizontalAlignment="Left" Margin="955,164,0,0" VerticalAlignment="Top" Width="427"/>
+        <Label x:Name="lab_art_id" Content=" " HorizontalAlignment="Left" Margin="1160,40,0,0" VerticalAlignment="Top" Width="222"/>
+        <Label x:Name="lab_art_date" Content="Дата проведения:" HorizontalAlignment="Left" Margin="955,195,0,0" VerticalAlignment="Top" Width="427"/>
+        <ListBox x:Name="listbox_artists" HorizontalAlignment="Left" Height="100" Margin="955,226,0,0" VerticalAlignment="Top" Width="160" SelectionChanged="listbox_artists_SelectionChanged"/>
+        <ListBox x:Name="party_list" HorizontalAlignment="Left" Height="228" Margin="955,331,0,0" VerticalAlignment="Top" Width="427" SelectionChanged="party_list_SelectionChanged"/>
+        <Button x:Name="parse" Content="Парс" HorizontalAlignment="Left" Margin="1080,35,0,0" VerticalAlignment="Top" Width="75" Click="parse_Click" Height="31"/>
+        <ProgressBar x:Name="pb" HorizontalAlignment="Left" Height="20" Margin="1160,10,0,0" VerticalAlignment="Top" Width="222"/>
+        <TextBox x:Name="apikey" HorizontalAlignment="Left" Height="20" Margin="1063,10,0,0" TextWrapping="Wrap" Text="api key here" VerticalAlignment="Top" Width="92"/>
+        <Button x:Name="citysearchbut" Content="поиск" HorizontalAlignment="Left" Margin="1307,227,0,0" VerticalAlignment="Top" Width="75" Height="23" Click="citysearchbut_Click"/>
+        <TextBox x:Name="citysearchtext" HorizontalAlignment="Left" Height="23" Margin="1120,227,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="182"/>
+        <ListBox x:Name="sortedtb" HorizontalAlignment="Left" Height="71" Margin="1120,255,0,0" VerticalAlignment="Top" Width="182" SelectionChanged="sortedtb_SelectionChanged"/>
+    </Grid>
+</Window>
