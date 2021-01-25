@@ -26,7 +26,7 @@ using Newtonsoft.Json;
 
 
 
-namespace mapa // сделати список мап обжектов в виде массива, что бы отключать маркеры выбранного исполнителя
+namespace mapa // сделали список мап обжектов в виде массива, что бы отключать маркеры выбранного исполнителя
 {
     /// <summary>
     /// Логика взаимодействия для MainWindow.xaml
@@ -41,8 +41,9 @@ namespace mapa // сделати список мап обжектов в вид�
 
         public List<GeoClass.Artists[]> artists_list = new List<GeoClass.Artists[]>();
 
+         //задаем список исполнителей
         public List<string> art_pars_list = new List<string>()
-
+        
         {
           "Gordon Rocker" , "Maria Moon" ,  "RYDYR" , "Maroon 5" , "Gorillaz" , "Lil pump" , "Wildways", "Harry" , "Bend" , "Gary lucas" , "Max Leone"
         };
@@ -51,7 +52,7 @@ namespace mapa // сделати список мап обжектов в вид�
 
         async Task getResponseAsync(string artName, string api)
         {
-            //---------------------
+            //подключение к апи
             HttpClient httpClient = new HttpClient();
             string request = "https://rest.bandsintown.com/v4/artists/" + artName + "/events/?app_id=33ef8f94b2739a88ee6db22fa3ced553";
             HttpResponseMessage response =
@@ -147,6 +148,7 @@ namespace mapa // сделати список мап обжектов в вид�
 
         public void initMap()
         {
+            // настройка параметров карты
             GMaps.Instance.Mode = AccessMode.ServerAndCache;
             Map.MapProvider = OpenStreetMapProvider.Instance;
             Map.MinZoom = 2;
@@ -182,7 +184,7 @@ namespace mapa // сделати список мап обжектов в вид�
 
 
         }
-
+        // при двойном нажатии убираем подсказку "имя исполнителя" из текстового поля
         private void tb_name_art_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             tb_name_art.Text = "";
@@ -206,9 +208,10 @@ namespace mapa // сделати список мап обжектов в вид�
                 {
                     index = index + artists_list[i].Count();
                 }
+                // при нажатии на концерт из списка фокусируем карту
                 index = index + party_list.SelectedIndex;
                 Map.Position = mapObjects[index].getFocus();
-
+                // выводим  данные об этом концерте 
                 lab_art_date.Content = "Дата проведения: " + (((artists_list[listbox_artists.SelectedIndex][party_list.SelectedIndex]).Datetime).ToString()); // Map.Position 
                 lab_art_id.Content = "Art id - " + (artists_list[listbox_artists.SelectedIndex][0]).ArtistId.ToString();
                 lab_art_counrty.Content = "Страна мероприятия: " + (artists_list[listbox_artists.SelectedIndex][party_list.SelectedIndex]).Venue.Country.ToString();
