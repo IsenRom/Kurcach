@@ -45,7 +45,8 @@ namespace mapa // сделали список мап обжектов в вид�
         public List<string> art_pars_list = new List<string>()
         
         {
-          "Gordon Rocker" , "Maria Moon" ,  "RYDYR" , "Maroon 5" , "Gorillaz" , "Lil pump" , "Wildways", "Harry" , "Bend" , "Gary lucas" , "Max Leone"
+           "Maroon 5" , "Gorillaz" , "Lil pump" , "Skillet","Hurts"
+
         };
 
         public List<GeoClass.Artists> sorted;
