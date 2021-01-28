@@ -41,7 +41,9 @@ namespace mapa // сделали список мап обжектов в вид�
 
         public List<GeoClass.Artists[]> artists_list = new List<GeoClass.Artists[]>();
 
-         //задаем список исполнителей
+        string apikey = "33ef8f94b2739a88ee6db22fa3ced553";
+
+        //задаем список исполнителей
         public List<string> art_pars_list = new List<string>()
         
         {
@@ -55,7 +57,7 @@ namespace mapa // сделали список мап обжектов в вид�
         {
             //подключение к апи
             HttpClient httpClient = new HttpClient();
-            string request = "https://rest.bandsintown.com/v4/artists/" + artName + "/events/?app_id=33ef8f94b2739a88ee6db22fa3ced553";
+            string request = "https://rest.bandsintown.com/v4/artists/" + artName + "/events/?app_id="+apikey;
             HttpResponseMessage response =
                 (await httpClient.GetAsync(request)).EnsureSuccessStatusCode();
             string responseBody = await response.Content.ReadAsStringAsync();
@@ -135,7 +137,8 @@ namespace mapa // сделали список мап обжектов в вид�
             }
             else
             {
-                lab_art_id.Content = ("Концерты " + artName + " не найдены");
+            
+                System.Windows.MessageBox.Show("Концерты " + artName + " не найдены");
             };
         }
 
@@ -144,7 +147,7 @@ namespace mapa // сделали список мап обжектов в вид�
         {
             InitializeComponent();
             initMap();
-            pb.Maximum = art_pars_list.Count;
+           
         }
 
         public void initMap()
@@ -175,7 +178,7 @@ namespace mapa // сделали список мап обжектов в вид�
         {
             try
             {
-                await getResponseAsync(tb_name_art.Text, apikey.Text);
+                await getResponseAsync(tb_name_art.Text,apikey);
 
             }
             catch (System.Net.Http.HttpRequestException)
@@ -213,8 +216,7 @@ namespace mapa // сделали список мап обжектов в вид�
                 index = index + party_list.SelectedIndex;
                 Map.Position = mapObjects[index].getFocus();
                 // выводим  данные об этом концерте 
-                lab_art_date.Content = "Дата проведения: " + (((artists_list[listbox_artists.SelectedIndex][party_list.SelectedIndex]).Datetime).ToString()); // Map.Position 
-                lab_art_id.Content = "Art id - " + (artists_list[listbox_artists.SelectedIndex][0]).ArtistId.ToString();
+                lab_art_date.Content = "Дата проведения: " + (((artists_list[listbox_artists.SelectedIndex][party_list.SelectedIndex]).Datetime).ToString()); // Map.Position               
                 lab_art_counrty.Content = "Страна мероприятия: " + (artists_list[listbox_artists.SelectedIndex][party_list.SelectedIndex]).Venue.Country.ToString();
                 lab_art_city.Content = "Город мероприятия: " + (artists_list[listbox_artists.SelectedIndex][party_list.SelectedIndex]).Venue.City.ToString();
                 lab_art_name.Content = "Название артиста: " + (artists_list[listbox_artists.SelectedIndex][0]).Lineup[0].ToString();
@@ -224,21 +226,6 @@ namespace mapa // сделали список мап обжектов в вид�
 
 
 
-
-        private async void parse_Click(object sender, RoutedEventArgs e)
-        {
-            string api = apikey.Text;
-            try
-            {
-                foreach (string name in art_pars_list)
-                    await getResponseAsync(name, api);
-            }
-            catch (System.Net.Http.HttpRequestException)
-            {
-                System.Windows.MessageBox.Show("Исполнитель не найден");
-            }
-
-        }
 
         private void citysearchbut_Click(object sender, RoutedEventArgs e)
         {
