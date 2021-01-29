@@ -33,31 +33,28 @@ namespace mapa // сделали список мап обжектов в вид�
     /// </summary>
     public partial class MainWindow : Window
     {
-        List<MapObject> mapObjects = new List<MapObject>();
+        List<GeoClass> mapObjects = new List<GeoClass>();
 
-        List<MapObject> sortmapObject;
+        List<GeoClass> sortmapObject;
 
         public bool bool_first = true;
 
         public List<GeoClass.Artists[]> artists_list = new List<GeoClass.Artists[]>();
+       
 
         string apikey = "33ef8f94b2739a88ee6db22fa3ced553";
 
-        //задаем список исполнителей
-        public List<string> art_pars_list = new List<string>()
-        
-        {
-           "Maroon 5" , "Gorillaz" , "Lil pump" , "Skillet","Hurts"
-
-        };
+      
+      
 
         public List<GeoClass.Artists> sorted;
 
-        async Task getResponseAsync(string artName, string api)
+       
+            async Task getResponseAsync(string artName, string api)
         {
             //подключение к апи
             HttpClient httpClient = new HttpClient();
-            string request = "https://rest.bandsintown.com/v4/artists/" + artName + "/events/?app_id="+apikey;
+            string request = "https://rest.bandsintown.com/v4/artists/" + artName + @"/events/?app_id="+apikey;
             HttpResponseMessage response =
                 (await httpClient.GetAsync(request)).EnsureSuccessStatusCode();
             string responseBody = await response.Content.ReadAsStringAsync();
@@ -94,13 +91,16 @@ namespace mapa // сделали список мап обжектов в вид�
                     {
                         foreach (GeoClass.Artists i in artists_list.Last())
                         {
+
+                         
+
                             string lat_str = i.Venue.Latitude.Replace(".", ",");
                             string lng_str = i.Venue.Longitude.Replace(".", ",");
 
                             double lat = Convert.ToDouble(lat_str);
                             double lng = Convert.ToDouble(lng_str);
 
-                            MapObject mapObject = new GeoClass(new PointLatLng(lat, lng), i.Venue.Location);
+                            GeoClass mapObject = new GeoClass(new PointLatLng(lat, lng), i.Venue.Location);
                             mapObjects.Add(mapObject);
                             Map.Markers.Add(mapObject.GetMarker());
                         }
@@ -125,7 +125,7 @@ namespace mapa // сделали список мап обжектов в вид�
                             double lat = Convert.ToDouble(lat_str);
                             double lng = Convert.ToDouble(lng_str);
 
-                            MapObject mapObject = new GeoClass(new PointLatLng(lat, lng), i.Venue.Location);
+                            GeoClass mapObject = new GeoClass(new PointLatLng(lat, lng), i.Venue.Location);
                             mapObjects.Add(mapObject);
                             Map.Markers.Add(mapObject.GetMarker());
 
@@ -230,7 +230,7 @@ namespace mapa // сделали список мап обжектов в вид�
         private void citysearchbut_Click(object sender, RoutedEventArgs e)
         {
             sortedtb.Items.Clear();
-            sortmapObject = new List<MapObject>();
+            sortmapObject = new List<GeoClass>();
             sorted = new List<GeoClass.Artists>();
             foreach (GeoClass.Artists[] temp in artists_list)
                 foreach (GeoClass.Artists artist in temp)
@@ -243,7 +243,7 @@ namespace mapa // сделали список мап обжектов в вид�
                         double lat = Convert.ToDouble(lat_str);
                         double lng = Convert.ToDouble(lng_str);
 
-                        MapObject mapObject = new GeoClass(new PointLatLng(lat, lng), artist.Venue.Location);
+                        GeoClass mapObject = new GeoClass(new PointLatLng(lat, lng), artist.Venue.Location);
                         sortmapObject.Add(mapObject);
                         
                     }

@@ -15,30 +15,27 @@ using System.Windows.Media.Imaging;
 
 namespace mapa.Classes
 {
-    public class GeoClass : MapObject
+    public class GeoClass  
     {
         PointLatLng point = new PointLatLng();
 
-        
+        string name;
 
 
-        public GeoClass(PointLatLng point, string name) : base (name)
+        public GeoClass(PointLatLng point, string name)
         {
             
             this.point = point;
+            this.name = name;
+
         }
 
-        public override double getDist(PointLatLng point)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override PointLatLng getFocus()
+        public  PointLatLng getFocus()
         {
             return point;
         }
 
-        public override GMapMarker GetMarker()
+        public  GMapMarker GetMarker()
         {
             GMapMarker marker = new GMapMarker(point)
             {
@@ -46,21 +43,14 @@ namespace mapa.Classes
                 {
                     Margin = new System.Windows.Thickness(-16, -16, 0, 0),
                     Width = 32, // ширина маркера
-                    Height = 32, // высота маркера
-                    ToolTip = objectName, // всплывающая подсказка
+                    Height = 32, // высота маркера                  
+                    ToolTip = name,
                     Source = new BitmapImage(new Uri("pack://application:,,,/Resources/001.png")) // картинка
                 }
             };
             return marker;
         }
-        public override double getSquare()
-        {
-            throw new NotImplementedException();
-        }
-
-
-
-
+     
         public partial class Artists
         {
             [JsonProperty("offers")]
