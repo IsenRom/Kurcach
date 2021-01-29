@@ -40,26 +40,29 @@ namespace mapa // сделали список мап обжектов в вид�
         public bool bool_first = true;
 
         public List<GeoClass.Artists[]> artists_list = new List<GeoClass.Artists[]>();
-       
+
 
         string apikey = "33ef8f94b2739a88ee6db22fa3ced553";
 
-      
-      
+
+
 
         public List<GeoClass.Artists> sorted;
 
-       
-            async Task getResponseAsync(string artName, string api)
+
+        async Task<string> http(string artName)
         {
-            //подключение к апи
             HttpClient httpClient = new HttpClient();
-            string request = "https://rest.bandsintown.com/v4/artists/" + artName + @"/events/?app_id="+apikey;
+            string request = "https://rest.bandsintown.com/v4/artists/" + artName + @"/events/?app_id=" + apikey;
             HttpResponseMessage response =
                 (await httpClient.GetAsync(request)).EnsureSuccessStatusCode();
-            string responseBody = await response.Content.ReadAsStringAsync();
-            //---------------------
+            return  await response.Content.ReadAsStringAsync();
 
+        }
+
+        async Task getResponseAsync(string artName)
+        {
+            string responseBody = await http(artName);
 
             GeoClass.Artists[] artistsFromResponce = GeoClass.Artists.FromJson(responseBody);
             List<GeoClass.Artists> artistsWithoutSTREAM = new List<GeoClass.Artists>();
@@ -87,25 +90,8 @@ namespace mapa // сделали список мап обжектов в вид�
                     artists_list.Add(artists);
                     listbox_artists.Items.Add(artists[0].Lineup[0]);
                     bool_first = false;
-                    if (artists_list.Count != 0)
-                    {
-                        foreach (GeoClass.Artists i in artists_list.Last())
-                        {
+                    metod();
 
-                         
-
-                            string lat_str = i.Venue.Latitude.Replace(".", ",");
-                            string lng_str = i.Venue.Longitude.Replace(".", ",");
-
-                            double lat = Convert.ToDouble(lat_str);
-                            double lng = Convert.ToDouble(lng_str);
-
-                            GeoClass mapObject = new GeoClass(new PointLatLng(lat, lng), i.Venue.Location);
-                            mapObjects.Add(mapObject);
-                            Map.Markers.Add(mapObject.GetMarker());
-                        }
-
-                    }
                 }
 
                 else
@@ -114,30 +100,13 @@ namespace mapa // сделали список мап обжектов в вид�
                 {
                     artists_list.Add(artists);
                     listbox_artists.Items.Add(artists[0].Lineup[0]);
-                    if (artists_list.Count != 0)
-                    {
-                        foreach (GeoClass.Artists i in artists_list.Last())
-                        {
-
-                            string lat_str = i.Venue.Latitude.Replace(".", ",");
-                            string lng_str = i.Venue.Longitude.Replace(".", ",");
-
-                            double lat = Convert.ToDouble(lat_str);
-                            double lng = Convert.ToDouble(lng_str);
-
-                            GeoClass mapObject = new GeoClass(new PointLatLng(lat, lng), i.Venue.Location);
-                            mapObjects.Add(mapObject);
-                            Map.Markers.Add(mapObject.GetMarker());
-
-                        }
-
-                    }
+                    metod();
                 }
 
             }
             else
             {
-            
+
                 System.Windows.MessageBox.Show("Концерты " + artName + " не найдены");
             };
         }
@@ -147,7 +116,7 @@ namespace mapa // сделали список мап обжектов в вид�
         {
             InitializeComponent();
             initMap();
-           
+
         }
 
         public void initMap()
@@ -178,7 +147,7 @@ namespace mapa // сделали список мап обжектов в вид�
         {
             try
             {
-                await getResponseAsync(tb_name_art.Text,apikey);
+                await getResponseAsync(tb_name_art.Text);
 
             }
             catch (System.Net.Http.HttpRequestException)
@@ -229,12 +198,18 @@ namespace mapa // сделали список мап обжектов в вид�
 
         private void citysearchbut_Click(object sender, RoutedEventArgs e)
         {
+            metod(citysearchtext.Text);
+        }
+
+        private void metod(string city)
+
+        {
             sortedtb.Items.Clear();
             sortmapObject = new List<GeoClass>();
             sorted = new List<GeoClass.Artists>();
             foreach (GeoClass.Artists[] temp in artists_list)
                 foreach (GeoClass.Artists artist in temp)
-                    if (artist.Venue.Country == citysearchtext.Text)
+                    if (artist.Venue.Country == city)
                     {
                         sorted.Add(artist);
                         string lat_str = artist.Venue.Latitude.Replace(".", ",");
@@ -245,12 +220,35 @@ namespace mapa // сделали список мап обжектов в вид�
 
                         GeoClass mapObject = new GeoClass(new PointLatLng(lat, lng), artist.Venue.Location);
                         sortmapObject.Add(mapObject);
-                        
+
                     }
             foreach (GeoClass.Artists temp in sorted)
                 sortedtb.Items.Add(temp.Venue.Country + " " + temp.Venue.City + " " + temp.Venue.Name);
+
         }
 
+        private void metod()
+        {
+            if (artists_list.Count != 0)
+            {
+                foreach (GeoClass.Artists i in artists_list.Last())
+                {
+
+
+
+                    string lat_str = i.Venue.Latitude.Replace(".", ",");
+                    string lng_str = i.Venue.Longitude.Replace(".", ",");
+
+                    double lat = Convert.ToDouble(lat_str);
+                    double lng = Convert.ToDouble(lng_str);
+
+                    GeoClass mapObject = new GeoClass(new PointLatLng(lat, lng), i.Venue.Location);
+                    mapObjects.Add(mapObject);
+                    Map.Markers.Add(mapObject.GetMarker());
+                }
+
+            }
+        }
         private void sortedtb_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (sortedtb.SelectedIndex != -1)
