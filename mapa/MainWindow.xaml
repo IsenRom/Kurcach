@@ -11,7 +11,7 @@
 
 
         <Grid Name="Maps" Height="Auto" Width="Auto" Margin="10,10,450,10">
-            <WindowsPresentation:GMapControl x:Name="Map" Loaded="MapLoaded"/>
+            <WindowsPresentation:GMapControl x:Name="Map"/>
 
 
         </Grid>
@@ -26,6 +26,7 @@
         <ListBox x:Name="party_list" HorizontalAlignment="Left" Height="228" Margin="955,331,0,0" VerticalAlignment="Top" Width="427" SelectionChanged="party_list_SelectionChanged"/>
         <Button x:Name="citysearchbut" Content="поиск" HorizontalAlignment="Left" Margin="1307,227,0,0" VerticalAlignment="Top" Width="75" Height="23" Click="citysearchbut_Click"/>
         <TextBox x:Name="citysearchtext" HorizontalAlignment="Left" Height="23" Margin="1120,227,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="182"/>
-        <ListBox x:Name="sortedtb" HorizontalAlignment="Left" Height="71" Margin="1120,255,0,0" VerticalAlignment="Top" Width="182" SelectionChanged="sortedtb_SelectionChanged"/>
+        <ListBox x:Name="sortedtb" HorizontalAlignment="Left" Height="71" Margin="1120,255,0,0" VerticalAlignment="Top" Width="182" SelectionChanged="sortedtb_SelectionChanged" DisplayMemberPath="_square"/>
+        <Button x:Name="rstbut" Content="X" HorizontalAlignment="Left" Margin="1307,255,0,0" VerticalAlignment="Top" Width="20" Height="20" Click="rstbut_Click"/>
     </Grid>
 </Window>

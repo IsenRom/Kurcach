@@ -15,42 +15,8 @@ using System.Windows.Media.Imaging;
 
 namespace mapa.Classes
 {
-    public class GeoClass  
+    public class GeoClass
     {
-        PointLatLng point = new PointLatLng();
-
-        string name;
-
-
-        public GeoClass(PointLatLng point, string name)
-        {
-            
-            this.point = point;
-            this.name = name;
-
-        }
-
-        public  PointLatLng getFocus()
-        {
-            return point;
-        }
-
-        public  GMapMarker GetMarker()
-        {
-            GMapMarker marker = new GMapMarker(point)
-            {
-                Shape = new Image
-                {
-                    Margin = new System.Windows.Thickness(-16, -16, 0, 0),
-                    Width = 32, // ширина маркера
-                    Height = 32, // высота маркера                  
-                    ToolTip = name,
-                    Source = new BitmapImage(new Uri("pack://application:,,,/Resources/001.png")) // картинка
-                }
-            };
-            return marker;
-        }
-     
         public partial class Artists
         {
             [JsonProperty("offers")]
@@ -88,7 +54,61 @@ namespace mapa.Classes
             [JsonProperty("url")]
             public Uri Url { get; set; }
 
-            
+            PointLatLng point = new PointLatLng();
+
+            string name;
+            GMapMarker marker;
+
+            public void GeoClass(PointLatLng point, string name)
+            {
+
+                this.point = point;
+                this.name = name;
+                GMapMarker marker = new GMapMarker(point)
+                {
+                    Shape = new Image
+                    {
+                        Margin = new System.Windows.Thickness(-16, -16, 0, 0),
+                        Width = 32, // ширина маркера
+                        Height = 32, // высота маркера                  
+                        ToolTip = name,
+                        Source = new BitmapImage(new Uri("pack://application:,,,/Resources/001.png")) // картинка
+                    }
+                };
+                this.marker = marker;
+            }
+
+            public PointLatLng getFocus { get { return point; } set {; } }
+
+
+            public GMapMarker getMarker
+            {
+                get
+                {
+                    return marker;
+                }
+                set {; }
+            }
+
+            public PointLatLng reGetFocus
+            {
+                get
+                {
+
+                    {
+                        string lat_str = Venue.Latitude.Replace(".", ",");
+                        string lng_str = Venue.Longitude.Replace(".", ",");
+
+                        double lat = Convert.ToDouble(lat_str);
+                        double lng = Convert.ToDouble(lng_str);
+
+
+                        return (new PointLatLng(lat, lng));
+                    };
+                }
+                set {; }
+            }
+            public string _square { get { return Venue.City + Venue.Name; } set { _square = value; } }
         }
 
         public partial class Artist
@@ -174,7 +194,7 @@ namespace mapa.Classes
 
             [JsonProperty("_squareName")]
             public string _squareName { get { return Name; } set { _squareName = value; } }
-            
+
         }
 
 
@@ -183,7 +203,7 @@ namespace mapa.Classes
         {
             public static Artists[] FromJson(string json) => JsonConvert.DeserializeObject<Artists[]>(json, Converter.Settings);
 
-            
+
 
         }
 
@@ -237,14 +257,9 @@ namespace mapa.Classes
 
     }
 
-    
+}
 
-   
 
-        
 
-    }
-
-    
 
 
